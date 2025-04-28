@@ -1,0 +1,7 @@
+data;produto;quantidade;custo;tipo;custo medio
+02/04/2025;Banana;20;3.5;s;3.5
+03/04/2025;Banana;30;3.2;e;3.01
+02/04/2025;Banana;50;3.0;e;3.0
+05/04/2025;Banana;25;2.7;e;2.94
+02/04/2025;Banana;10;3.5;s;3.5
+02/04/2025;Banana;40;2.8;e;2.93
