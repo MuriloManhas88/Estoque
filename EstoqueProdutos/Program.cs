@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using CsvHelper;
 using CsvHelper.Configuration;
-using EstoqueTeste;
 
 namespace EstoqueTeste
 {
@@ -23,6 +22,7 @@ namespace EstoqueTeste
 
             try
             {
+                Console.OutputEncoding = Encoding.UTF8;
                 Console.Write("Digite o nome do arquivo CSV (ex: estoque.csv): ");
                 var nomeArquivo = Console.ReadLine()?.Trim();
 
@@ -67,7 +67,6 @@ namespace EstoqueTeste
                     return;
                 }
 
-                // Mostrar datas disponíveis
                 var datasDisponiveis = produtos
                     .Select(p => p.Data.Date)
                     .Distinct()
@@ -81,8 +80,6 @@ namespace EstoqueTeste
                 }
 
                 List<Produto> produtosFiltrados;
-
-                // Perguntar se quer intervalo de datas
                 string resposta;
                 while (true)
                 {
@@ -123,10 +120,10 @@ namespace EstoqueTeste
                     return;
                 }
 
-                Console.WriteLine("\nTabela de operações processadas:");
-                Console.WriteLine("-------------------------------------------------------------------------------------------");
-                Console.WriteLine($"{"Data",-15} {"Produto",-15} {"Qtd",-5} {"Custo",-7} {"Tipo",-5} {"Custo Médio",-15} {"Saldo",-5}");
-                Console.WriteLine("-------------------------------------------------------------------------------------------");
+                // Cabeçalho da tabela
+                Console.WriteLine("+------------+------------+-----+--------+------+--------------+-------+");
+                Console.WriteLine($"| {Centralizar("Data", 10)} | {Centralizar("Produto", 10)} | {Centralizar("Qtd", 3)} | {Centralizar("Custo", 6)} | {Centralizar("Tipo", 4)} | {Centralizar("Custo Médio", 12)} | {Centralizar("Saldo", 5)} |");
+                Console.WriteLine("+------------+------------+-----+--------+------+--------------+-------+");
 
                 var controleProdutos = new Dictionary<string, (double custoMedio, int saldo, bool primeiraEntrada)>();
 
@@ -167,18 +164,16 @@ namespace EstoqueTeste
 
                     controleProdutos[nomeProduto] = (custoMedio, saldo, primeiraEntrada);
 
-                    Console.WriteLine($"{produto.Data:dd/MM/yyyy} {nomeProduto,-15} {produto.Quantidade,-5} {produto.Custo,-7} {produto.Tipo,-5} {Math.Round(custoMedio, 3),-15} {saldo,-5}");
+                    Console.WriteLine($"| {Centralizar(produto.Data.ToString("dd/MM/yyyy"), 10)} | {Centralizar(nomeProduto, 10)} | {Centralizar(produto.Quantidade.ToString(), 3)} | {Centralizar(produto.Custo.ToString("N2"), 6)} | {Centralizar(produto.Tipo, 4)} | {Centralizar(Math.Round(custoMedio, 3).ToString("N3"), 12)} | {Centralizar(saldo.ToString(), 5)} |");
                 }
 
-                Console.WriteLine("\n-------------------------------------------------------------------------------------------");
+                Console.WriteLine("+------------+------------+-----+--------+------+--------------+-------+");
 
-                // Mostrar resumo final
                 Console.WriteLine("\nResumo Final:");
                 foreach (var item in controleProdutos)
                 {
                     var nomeProduto = item.Key;
                     var (custoMedioFinal, saldoFinal, _) = item.Value;
-
                     Console.WriteLine($"Produto: {nomeProduto} | Saldo Final: {saldoFinal} | Custo Médio Final: {Math.Round(custoMedioFinal, 3)}");
                 }
             }
@@ -190,9 +185,7 @@ namespace EstoqueTeste
             {
                 Console.WriteLine($"\n[Erro inesperado]: {ex.Message}");
                 if (ex.InnerException != null)
-                {
                     Console.WriteLine($"Detalhes: {ex.InnerException.Message}");
-                }
             }
         }
 
@@ -210,6 +203,17 @@ namespace EstoqueTeste
 
                 Console.WriteLine("Formato inválido. Tente novamente.");
             }
+        }
+
+        private static string Centralizar(string texto, int largura)
+        {
+            if (string.IsNullOrEmpty(texto)) texto = "";
+            if (texto.Length >= largura) return texto.Substring(0, largura);
+
+            int espacos = largura - texto.Length;
+            int padLeft = espacos / 2 + texto.Length;
+
+            return texto.PadLeft(padLeft).PadRight(largura);
         }
     }
 }

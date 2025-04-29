@@ -56,11 +56,11 @@ namespace EstoqueTeste.UnitTests
         public void Deve_Verificar_Colunas_Obrigatorias_No_CSV()
         {
             // Arrange
-            var expectedHeaders = new[] { "data", "produto", "quantidade", "custo", "tipo" };
+            var expectedHeaders = new[] { "data", "produto", "quantidade", "custo", "tipo", "custo medio", "saldo" };
 
             var csvContent =
-@"Data;Produto;Quantidade;Custo;Tipo
-01/04/2025;Maçã;20;5;e";
+@"Data;Produto;Quantidade;Custo;Tipo;custo medio; saldo;
+01/04/2025;Maçã;20;5;e;60;30";
 
             var filePath = Path.GetTempFileName();
             File.WriteAllText(filePath, csvContent);
