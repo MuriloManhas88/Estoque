@@ -9,7 +9,7 @@ namespace EstoqueTeste
         public int Quantidade { get; set; }
         public double Custo { get; set; }
         public string Tipo { get; set; } = string.Empty;
-        public double CustoMedio { get; set; }   // 🔥 Adicionado
+        public double CustoMedio { get; set; }
         public int Saldo { get; set; }
     }
 
